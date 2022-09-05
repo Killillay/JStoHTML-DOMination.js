@@ -1,0 +1,325 @@
+//global variables
+        var body = document.body;
+        var ID = "id";
+        var CLASS = "class";
+        var TAG = "tag";
+        
+        //clear tag (by id) [if blank, clear body]
+        function clear(id) {
+            if(id === undefined) {
+                clear(body);
+            }
+            
+            id.innerHTML = "";
+        }
+        
+        var formatStyle = {
+            position: undefined,
+            
+            bck: undefined,
+        }
+        
+        
+        function style(callForm, call, format) {
+            switch(callForm) {
+                case "id":
+                    var tags = [document.getElementById(call)];
+                break;
+                case "class":
+                    var tags = document.getElementsByClassName(call);
+                break;
+                case "tag":
+                    var tags = document.getElementsByTagName(call);
+                break;
+            }
+            
+            for(var i = 0; i < tags.length; i ++) {
+                var tag = tags[i].style;
+                for(var j = 0; j < format.length; j ++) {
+                    var p = format[j];
+                    var v = p[1];
+                    switch(p[0]) {
+                        //coloring
+                        case "background":
+                        case "bck":
+                            tag.background = v;
+                        break;
+                        case "color":
+                            tag.color = v;
+                        break;
+                        
+                        //positioning
+                        case "position":
+                            tag.position = v;
+                        break;
+                        case "overflow":
+                            tag.overflow = v;
+                        break;
+                        case "left":
+                            tag.left = v;
+                        break;
+                        case "right":
+                            tag.right = v;
+                        break;
+                        case "top":
+                            tag.top = v;
+                        break;
+                        case "bottom":
+                            tag.bottom = v;
+                        break;
+                        
+                        //margins
+                        case "margin":
+                            tag.margin = v;
+                        case "left-margin":
+                        case "leftMargin":
+                            tag.marginLeft = v;
+                        break;
+                        case "right-margin":
+                        case "rightMargin":
+                            tag.marginRight = v;
+                        break;
+                        case "top-margin":
+                        case "topMargin":
+                            tag.marginTop = v;
+                        break;
+                        case "bottom-margin":
+                        case "bottomMargin":
+                            tag.marginBottom = v;
+                        break;
+                        
+                        //padding
+                        case "padding":
+                            tag.padding = v;
+                        case "top-padding":
+                        case "topPadding":
+                            tag.paddingTop = v;
+                        break;
+                        case "left-padding":
+                        case "leftPadding":
+                            tag.paddingLeft = v;
+                        break;
+                        case "right-padding":
+                        case "rightPadding":
+                            tag.paddingRight = v;
+                        break;
+                        case "bottom-padding":
+                        case "botoomPadding":
+                            tag.paddingBottom = v;
+                        break;
+                        
+                        //border
+                        case "border":
+                            tag.border = v;
+                        break;
+                        case "border-width":
+                        case "borderWidth":
+                            tag.borderWidth = v;
+                        break;
+                        case "boder-color":
+                        case "borderColor":
+                            tag.borderColor = v;
+                        break;
+                        
+                        //text properties
+                        case "text-align":
+                        case "textAlign":
+                            tag.textAlign = v;
+                        break;
+                        case "font":
+                            tag.fontFamily = v;
+                        break;
+                        case "font-style":
+                        case "fontStyle":
+                            tag.fontStyle = v;
+                        break;
+                        case "font-size":
+                        case "fontSize":
+                            tag.fontSize = v;
+                        break;
+                        case "line-height":
+                        case "lineHeight":
+                            tag.lineHeight = v;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        //tag properties
+        function Properties(properties) {
+            for(var i = 0; i < properties.length; i ++) {
+                var p = properties[i];
+                switch(p[0]) {
+                    case "id":
+                        this.id = p[1];
+                    break;
+                    case "class":
+                        this.Class = p[1];
+                    break;
+                    case "placeholder":
+                        this.placeholder = p[1];
+                    break;
+                    case "name":
+                        this.name = p[1];
+                    break;
+                }
+            }
+        }
+        
+        //appends{
+        //create paragraph tag
+        function p(text, appendTo, prop) {
+            if(prop === undefined) {
+                prop = [];
+            }
+            var p = new Properties(prop);
+            
+            
+            appendTo.innerHTML += "<p id="+p.id+" class="+p.Class+">"+text+"</p>";
+        }
+        
+        //create heading tag
+        function h(text, num, appendTo, prop) {
+            if(prop === undefined) {
+                prop = [];
+            }
+            var p = new Properties(prop);
+            
+            appendTo.innerHTML += "<h"+num+" id="+p.id+" class="+p.Class+">"+text+"</h>"
+        }
+        
+        //create div tag
+        function div(interior, appendTo, prop) {
+            var p = new Properties(prop);
+            
+            appendTo.innerHTML += "<div id="+p.id+" class="+p.Class+"></div>";
+            
+            if(interior !== undefined) {
+                interior();
+            }
+        }
+        
+        //create table tag
+        function table(headings, rows, appendTo, prop) {
+            function getHead() {
+                var row = "";
+                
+                for(var i = 0; i < headings.length; i ++) {
+                    row += "<tr>"
+                    for(var j = 0; j < headings[i].length; j ++) {
+                        row += ("<th>"+headings[i][j]+"</th>");
+                    }
+                    row += "</tr>";
+                }
+                
+                return row;
+            }
+            function getBody() {
+                var row = "";
+                
+                for(var i = 0; i < rows.length; i ++) {
+                    row += "<tr>";
+                    for(var j = 0; j < rows[i].length; j++) {
+                        row += ("<td>"+rows[i][j]+"</td>");
+                    }
+                }
+                
+                return row;
+            }
+            
+            if(prop === undefined) {
+                prop = [];
+            }
+            var p = new Properties(prop);
+            
+            
+            appendTo.innerHTML += "<table id="+p.id+" class="+p.Class+"><thead>"+getHead()+"</thead><tbody>"+getBody()+"</tbody></table>"
+            
+        }
+        
+        function l(type, items, appendTo, prop) {
+            if(prop === undefined) {
+                prop = [];
+            }
+            if(type === "outlined") {
+                type = "o";
+            }
+            if(type === "unoutlined") {
+                type = "u";
+            }
+            
+            
+            var p = new Properties(prop);
+            
+            function getItems() {
+                var Items = "";
+                
+                for(var i = 0; i < items.length; i ++) {
+                    Items += ("<li>"+items[i]+"</li>");
+                }
+                
+                return(Items);
+            }
+            
+            appendTo.innerHTML += "<"+type+"l id="+p.id+" class="+p.Class+">"+getItems()+"</"+type+"l>";
+        }
+        
+        //create image tag
+        function img(src, appendTo, prop) {
+            if(prop === undefined) {
+                prop = [];
+            }
+            var p = new Properties(prop);
+            
+            appendTo.innerHTML += "<img src="+src+" id="+prop.id+" class="+prop.Class+">"
+        }
+        
+        function button(name, appendTo, prop, action) {
+            if(prop === undefined) {
+                prop = [];
+            }
+            var p = new Properties(prop);
+            
+            appendTo.innerHTML += "<button id="+p.id+" class="+p.Class+">"+name+"</button>"
+            
+            if(action !== undefined) {
+                var btn = document.getElementById(p.id);
+                btn.addEventListener("click", function() {
+                    action()
+                })
+            }
+        }
+        
+        function input(appendTo, prop) {
+            if(prop === undefined) {
+                prop = [];
+            }
+            
+            var p = new Properties(prop);
+            if(p.placeholder === undefined) {
+                p.placeholder = "";
+            }
+            
+            appendTo.innerHTML += "<input id="+p.id+" class="+p.Class+" placeholder=\""+p.placeholder+"\">";
+        }
+        //}
+        
+        //embeds{
+        //create link tag
+        function a(text, href, prop) {
+            if(prop === undefined) {
+                prop = [""];
+            }
+            var p = new Properties(prop[0], prop[1]);
+            
+            return("<a name="+p.name+" href="+href+" id="+p.id+" class="+p.Class+">"+text+"</a>");
+        }
+        
+        //create span tag
+        function span(text, prop) {
+            var p = new Properties(prop[0], prop[1]);
+            
+            return("<span id="+prop.id+" class="+prop.Class+">"+text+"</span>");
+        }
+        //}
